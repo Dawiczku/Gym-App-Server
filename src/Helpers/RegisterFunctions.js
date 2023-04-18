@@ -1,6 +1,6 @@
 const { execute, mysqlPool } = require("../Config/DataBase");
-const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
 
 const isUserInDB = async (userName, email) => {
   const checkUserNameQuery = "SELECT * FROM user WHERE userName=(?)";

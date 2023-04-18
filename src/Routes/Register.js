@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { isUserInDB, addUserToDB } = require("../Helpers/FunctionsDB");
+const { isUserInDB, addUserToDB } = require("../Helpers/RegisterFunctions");
 
 router.post("/", (req, res) => {
   const { userName, password, email } = req.body;
