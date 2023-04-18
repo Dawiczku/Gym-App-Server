@@ -1,5 +1,6 @@
 const { execute, mysqlPool } = require("../Config/DataBase");
 const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 
 const isUserInDB = async (userName, email) => {
   const checkUserNameQuery = "SELECT * FROM user WHERE userName=(?)";
@@ -26,9 +27,11 @@ const isUserInDB = async (userName, email) => {
 const addUserToDB = async (userName, password, email) => {
   try {
     const connection = await mysqlPool.getConnection();
+    const hashedPassword = await bcrypt.hash(password, 12);
+
     connection.query(
       "INSERT INTO user(userName, userPassword, userEmail, userID) VALUES(?, ?, ?, ?)",
-      [userName, password, email, uuidv4()]
+      [userName, hashedPassword, email, uuidv4()]
     );
     connection.release();
   } catch (error) {
