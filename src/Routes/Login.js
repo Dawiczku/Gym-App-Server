@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { checkUserPassword, isUserInDB } = require("../Helpers/LoginFunctions");
+const {
+  checkUserPassword,
+  isUserInDB,
+  getUserData,
+} = require("../Helpers/LoginFunctions");
 
 router.post("/", (req, res) => {
   const { userName, password } = req.body;
@@ -9,9 +13,13 @@ router.post("/", (req, res) => {
     if (result === true) {
       checkUserPassword(userName, password)
         .then(() => {
-          res
-            .status(200)
-            .send({ success: true, message: `Nice to see you ${userName}!` });
+          getUserData(userName).then((userData) => {
+            res.status(200).send({
+              success: true,
+              message: `Nice to see you ${userName}!`,
+              userData,
+            });
+          });
         })
         .catch((error) => {
           res.send({ success: false, errMessage: "Server error" });

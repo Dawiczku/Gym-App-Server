@@ -24,14 +24,30 @@ const isUserInDB = async (userName, email) => {
   }
 };
 
-const addUserToDB = async (userName, password, email) => {
+const addUserToDB = async (
+  userName,
+  firstName,
+  lastName,
+  phone,
+  password,
+  email
+) => {
   try {
     const connection = await mysqlPool.getConnection();
     const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedEmail = await bcrypt.hash(email, 12);
 
     connection.query(
-      "INSERT INTO user(userName, userPassword, userEmail, userID) VALUES(?, ?, ?, ?)",
-      [userName, hashedPassword, email, uuidv4()]
+      "INSERT INTO user(userName, userPassword, userFirstName, userLastName, userPhone, userEmail, userID) VALUES(?, ?, ?, ?, ?, ?, ?)",
+      [
+        userName,
+        hashedPassword,
+        firstName,
+        lastName,
+        phone,
+        hashedEmail,
+        uuidv4(),
+      ]
     );
     connection.release();
   } catch (error) {

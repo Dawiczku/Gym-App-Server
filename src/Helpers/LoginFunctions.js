@@ -27,7 +27,18 @@ const checkUserPassword = async (userName, password) => {
   }
 };
 
+const getUserData = async (userName) => {
+  const getData = "SELECT * FROM user WHERE userName=(?)";
+  try {
+    const data = await execute(getData, [userName]);
+    return data[0][0];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   isUserInDB,
   checkUserPassword,
+  getUserData,
 };

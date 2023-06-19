@@ -3,14 +3,14 @@ const router = express.Router();
 const { isUserInDB, addUserToDB } = require("../Helpers/RegisterFunctions");
 
 router.post("/", (req, res) => {
-  const { userName, password, email } = req.body;
+  const { userName, firstName, lastName, phone, password, email } = req.body;
 
   isUserInDB(userName, email)
     .then(({ isDataTaken, dataMessage }) => {
       if (isDataTaken) {
         res.send({ success: false, errMessage: dataMessage });
       } else {
-        addUserToDB(userName, password, email)
+        addUserToDB(userName, firstName, lastName, phone, password, email)
           .then(() => {
             res.send({ success: true, message: dataMessage });
           })
